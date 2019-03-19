@@ -5,46 +5,31 @@
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://d3js.org/topojson.v1.min.js"></script>
-  <style>
-    body {
-      font-family: sans-serif;
-    }
-  </style>
 
-  <!-- Map Styles -->
-  <style>
-    .background {
-      fill: none;
-      pointer-events: all;
-    }
-
-    #states {
-      fill: #aaa;
-    }
-
-    #states .active {
-      fill: orange;
-    }
-
-    #state-borders {
-      fill: none;
-      stroke: #fff;
-      stroke-width: 1.5px;
-      stroke-linejoin: round;
-      stroke-linecap: round;
-      pointer-events: none;
-    }
-  </style>
+  <link rel="stylesheet" href="./main.css">
 </head>
 
 <body>
-
   <h1>Weather Search</h1>
   <p>Select a state to see the current weather from that state's capital</p>
-  <h3 id="name"></h3>
-  <p id="temp-c">loading...</p>
-  <p id="temp-f"></p>
-
+  <div id="visualization">
+    <div id="map"></div>
+    <div id="city-info">
+      <div>
+        <h6>Current weather</h6>
+        <h2 id="name"></h2>
+        <p id="temp-f"></p>
+      </div>
+      <!-- <div>
+        <h6>5 Day forecast</h6>
+        <p id="temp-0"></p>
+        <p id="temp-1"></p>
+        <p id="temp-2"></p>
+        <p id="temp-3"></p>
+        <p id="temp-4"></p>
+      </div> -->
+    </div>
+  </div>
 
   <script src="./main.js"></script>
 </body>

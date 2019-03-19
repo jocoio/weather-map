@@ -1,0 +1,44 @@
+body {
+  font-family: sans-serif;
+}
+
+h2 {
+  margin-top: 10px;
+}
+
+h6 {
+  margin-bottom: 0;
+}
+
+/* Layout */
+#visualization {
+  display: flex;
+  flex-direction: row;
+}
+
+#city-info {
+  padding-left: 15px;
+}
+
+/* Map Styles */
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+#states {
+  fill: #aaa;
+}
+
+#states .active {
+  fill: orange;
+}
+
+#state-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
