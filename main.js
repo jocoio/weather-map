@@ -10,14 +10,19 @@ var state_info = JSON.parse(request.responseText);
 var url = "";
 var format = d3.format(".2f");
 
-// Grabs weather data for given city_name
-function update(city) {
 
-  console.log(projection([city.long, city.lat]));
+function update(d) {
+
+  var abbr = d.properties.STATE_ABBR; // State abbreviation
+  var city = state_info[abbr]; // Capital city object
 
   weather_url = "https://api.openweathermap.org/data/2.5/weather?q=" + city.capital + ",us&appid=e95cc5001f5007830d078685ef86fd62";
   forecast_url = "https://api.openweathermap.org/data/2.5/forecast?q=" + city.capital + ",us&appid=e95cc5001f5007830d078685ef86fd62";
 
+  d3.select('.active').attr("r", 10).style("fill", "#aaa"); // Reset state color
+  g.select("circle").remove(); // Remove capital circle
+
+  // Current weather data
   d3.json(weather_url, function (data) {
     var kelvin = data.main.temp;
 
@@ -25,26 +30,60 @@ function update(city) {
     g.selectAll("circle")
       .data([[city.long, city.lat]]).enter()
       .append("circle")
-      .attr("cx", function (d) { console.log(projection(d)); return projection(d)[0]; })
+      .attr("cx", function (d) { return projection(d)[0]; })
       .attr("cy", function (d) { return projection(d)[1]; })
       .attr("r", "3px")
       .attr("fill", "black")
 
     // Populate side-bar info
+    d3.select("#name").text(city.capital + ", " + abbr);
     d3.select("#temp-f").text(format(fahrenheit(kelvin)) + " °F");
+
+    // Set the color of the state
+    var hue = 30 + 240 * (celcuis(kelvin) - 30) / 60;
+    var hsl_string = 'hsl(' + [hue, '70%', '50%'] + ')';
+    d3.select('.active').attr("r", 10).style("fill", hsl_string);
   });
 
+  // 5 Day forecast data
   d3.json(forecast_url, function (data) {
-    var kelvin = data.list[0].main.temp;
+
     console.log(data);
-    // Populate 
-    //d3.select("#temp-f").text(format(fahrenheit(kelvin)) + " °F");
+
+    for (var i = 0; i < 5; i++) {
+      var avg_kelvin = average_temps(i, data.list);
+      d3.select("#temp-" + i).text(format(fahrenheit(avg_kelvin)) + " °F");
+    }
   });
+}
+
+function reset(d) {
+  document.getElementById('name').innerHTML = "";
+  document.getElementById('temp-f').innerHTML = "";
+
+  for (var i = 0; i < 5; i++) {
+    d3.select("#temp-" + i).text("");
+  }
+
+  d3.select('.active').attr("r", 10).style("fill", "#aaa"); // Reset state color
+  g.select("circle").remove(); // Remove capital circle
 }
 
 // Temp translations
 function celcuis(kelvin) { return kelvin - 273.15; }
 function fahrenheit(kelvin) { return celcuis(kelvin) * 9 / 5 + 32; }
+
+// Averages 24 hours of temperatures
+function average_temps(i, temp_list) {
+  
+  var total = 0;
+  
+  for (var x = 0; x < 8; x++) {
+    total += temp_list[(i * 8) + i].main.temp;
+  }
+
+  return total / 8;
+}
 
 // Update weather every five minutes
 var fiveMinutes = 1000 * 60 * 5;
@@ -102,22 +141,22 @@ d3.json("./us.json", function (error, us) {
     .attr("d", path);
 });
 
+// Handles clicking on the d3 canvas
+// If clicked on a state, d = state object
 function clicked(d) {
 
   var x, y, k;
 
-  // If d is a different state
+  // If d exists and is not the currently centered state
   if (d && centered !== d) {
     var centroid = path.centroid(d);
-    var abbr = d.properties.STATE_ABBR;
 
     x = centroid[0];
     y = centroid[1];
     k = 3;
     centered = d;
 
-    document.getElementById('name').innerHTML = state_info[abbr].capital + ", " + abbr;
-    update(state_info[abbr]);
+    update(d);
   }
   // Else reset zoom
   else {
@@ -126,11 +165,8 @@ function clicked(d) {
     k = 1;
     centered = null;
 
-    document.getElementById('name').innerHTML = "";
-    document.getElementById('temp-f').innerHTML = "";
+    reset(d);
   }
-
-  g.select("circle").remove();
 
   g.selectAll("path")
     .classed("active", centered && function (d) { return d === centered; });

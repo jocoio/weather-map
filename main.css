@@ -11,6 +11,7 @@ h6 {
 }
 
 /* Layout */
+
 #visualization {
   display: flex;
   flex-direction: row;
@@ -18,9 +19,13 @@ h6 {
 
 #city-info {
   padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* Map Styles */
+
 .background {
   fill: none;
   pointer-events: all;
@@ -28,10 +33,6 @@ h6 {
 
 #states {
   fill: #aaa;
-}
-
-#states .active {
-  fill: orange;
 }
 
 #state-borders {
