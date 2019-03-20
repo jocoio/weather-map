@@ -8,9 +8,9 @@ request.send(null)
 var state_info = JSON.parse(request.responseText);
 
 var url = "";
-var format = d3.format(".2f");
+var format = d3.format(".0f");
 
-
+// Change state
 function update(d) {
 
   var abbr = d.properties.STATE_ABBR; // State abbreviation
@@ -40,9 +40,7 @@ function update(d) {
     d3.select("#temp-f").text(format(fahrenheit(kelvin)) + " °F");
 
     // Set the color of the state
-    var hue = 30 + 240 * (celcuis(kelvin) - 30) / 60;
-    var hsl_string = 'hsl(' + [hue, '70%', '50%'] + ')';
-    d3.select('.active').attr("r", 10).style("fill", hsl_string);
+    d3.select('.active').attr("r", 10).style("fill", tempToHSL(kelvin));
   });
 
   // 5 Day forecast data
@@ -50,39 +48,67 @@ function update(d) {
 
     console.log(data);
 
-    for (var i = 0; i < 5; i++) {
+    var day = new Date();
+    var days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+    // Compute and populate 5 day forecast sidebar
+    for (var i = 0; i < 5; i++) { 
       var avg_kelvin = average_temps(i, data.list);
-      d3.select("#temp-" + i).text(format(fahrenheit(avg_kelvin)) + " °F");
+      d3.select("#temp-" + i).text(days[(day.getDay() + 1 + i) % 7 ] + "     " + format(fahrenheit(avg_kelvin)) + " °F");
+    }
+
+    // Change map based on slider
+    document.getElementById("time-warp").oninput = function () {
+
+      var future_temp = data.list[this.value].main.temp;
+      d3.select('.active').attr("r", 10).style("fill", tempToHSL(future_temp));
+
+      var future_text = data.list[this.value].dt_txt;
+      d3.select('#time-code').text(future_text);
     }
   });
 }
 
+// Leave states
 function reset(d) {
+  // Current weather text
   document.getElementById('name').innerHTML = "";
   document.getElementById('temp-f').innerHTML = "";
 
+  // Future weather text
   for (var i = 0; i < 5; i++) {
     d3.select("#temp-" + i).text("");
   }
 
+  // Scrubber text
+  d3.select('#time-code').text("");
+
+  // State styling
   d3.select('.active').attr("r", 10).style("fill", "#aaa"); // Reset state color
   g.select("circle").remove(); // Remove capital circle
 }
 
-// Temp translations
+// Temperature conversions
 function celcuis(kelvin) { return kelvin - 273.15; }
 function fahrenheit(kelvin) { return celcuis(kelvin) * 9 / 5 + 32; }
 
 // Averages 24 hours of temperatures
 function average_temps(i, temp_list) {
-  
+
   var total = 0;
-  
+
   for (var x = 0; x < 8; x++) {
     total += temp_list[(i * 8) + i].main.temp;
   }
 
   return total / 8;
+}
+
+// Converts kelvin temp to HSL string representation
+function tempToHSL(temp) {
+  var hue = 30 + 240 * (celcuis(temp) - 30) / 60;
+  var hsl_string = 'hsl(' + [hue, '70%', '50%'] + ')';
+  return hsl_string;
 }
 
 // Update weather every five minutes
