@@ -7,10 +7,11 @@
   <script src="https://d3js.org/topojson.v1.min.js"></script>
 
   <link rel="stylesheet" href="./main.css">
+  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700" rel="stylesheet">
 </head>
 
 <body>
-  <h1>Weather Search</h1>
+  <h1>Capital Climate</h1>
   <p>Select a state to see the current weather from the state capital</p>
   <div id="visualization">
     <div id="map"></div>
@@ -29,12 +30,14 @@
         <p id="temp-4"></p>
       </div>
       <div>
-          <h6>Future temps</h6>
+          <h6>Forecast Animation</h6>
+          <h2 id="time-temp"></h2>
           <p id="time-code"></p>
-          <input type="range" min="0" max="37" value="0" class="slider" id="time-warp">
+          <input id="time-warp" type="range" min="0" max="37" value="0" class="slider">
+          <button id="time-play">Play</button>
         </div>
     </div>
   </div>
-
+  <script src="./mapzoom.js"></script>
   <script src="./main.js"></script>
 </body>
