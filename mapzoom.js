@@ -1,6 +1,8 @@
 // MAP ZOOM AND CENTER
 // Based on https://bl.ocks.org/mbostock/2206590
 
+
+// TODO: Make map responsive to screen size
 var width = 960;
 var height = 500;
 var centered;

@@ -1,9 +1,18 @@
+/* Built-in elements */
+
 body {
   font-family: 'IBM Plex Sans', sans-serif;
+  margin: 0;
+  padding: 15px;
+  background-color: #fbfbfb;
 }
 
 path { 
   transition: all .25s ease; 
+}
+
+h1 {
+  margin-bottom: 5px;
 }
 
 h2 {
@@ -14,21 +23,87 @@ h6 {
   margin-bottom: 0;
 }
 
-/* Layout */
+.slider {
+  -webkit-appearance: none;
+
+  height: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+
+/* Custon elements */
+
+#header>p {
+  margin: 0 0 20px 0;
+}
 
 #visualization {
-  display: flex;
-  flex-direction: row;
+  position: relative;
+  width: 960px;
+  height: 500px;
+}
+
+#info-layer {
+  position: absolute;
+  
+  width: 960px;
+  height: 500px;
+  pointer-events: none;
 }
 
 #city-info {
-  padding-left: 15px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
+  width: 100%;
+}
+
+#current {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  margin-left: 15px;
+}
+
+#forecast {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  margin-right: 15px;
+}
+
+#animation {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  pointer-events: auto;
+  z-index: 1;
+  margin-left: 15px;
+  margin-bottom: 15px;
+}
+
+#time-warp,#time-play {
+  visibility: hidden;
+}
+
+#time-warp {
+  width: 100px;
+  transition: all 500ms ease-out;
 }
 
 /* Map Styles */
+
+#map {
+position: absolute;
+  z-index: 0;
+}
 
 .background {
   fill: none;
@@ -36,7 +111,7 @@ h6 {
 }
 
 #states {
-  fill: #aaa;
+  fill: #dddddd;
 }
 
 #state-borders {

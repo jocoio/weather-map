@@ -60,6 +60,9 @@ function loadState(d) {
     document.getElementById("time-warp").oninput = function () {
       vizualizeForecast(data.list[this.value])
       play_idx = this.value;
+      if (playing) {
+        playing = false;
+      }
     }
 
     // Handles play/pause of animation
@@ -85,15 +88,23 @@ function leaveState() {
   // Forecast section
   playing = false;
   play_idx = 0;
-  d3.select("#time-temp").text("");
-  d3.select('#time-code').text("");
+
   document.getElementById("time-warp").value = play_idx;
+  document.getElementById("time-warp").style.width = "100px"
   document.getElementById("time-warp").style.visibility = "hidden";
   document.getElementById("time-play").style.visibility = "hidden";
 
+
+  setTimeout(function () {
+    d3.select("#time-temp").text("");
+    d3.select('#time-code').text("");
+  }, 500);
+
   // State styling
-  d3.select('.active').attr("r", 10).style("fill", "#aaa"); // Reset state color
+  d3.select('.active').attr("r", 10).style("fill", "#dddddd"); // Reset state color
   g.select("circle").remove(); // Remove capital circle
+
+
 }
 
 
@@ -120,6 +131,7 @@ function handleAnimateClick(data) {
   // Check global to see if playing
   if (!playing) {
     document.getElementById("time-play").innerHTML = "Pause"
+    document.getElementById("time-warp").style.width = "850px"
     playing = true;
 
     if (play_idx == 37) {
@@ -135,6 +147,7 @@ function handleAnimateClick(data) {
 }
 
 // Recursive function that animates the five day forecast
+// TODO: Add day/night indicator somewhere
 function animateForecast(data_list) {
 
   // Display the current slide

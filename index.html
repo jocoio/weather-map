@@ -11,17 +11,19 @@
 </head>
 
 <body>
-  <h1>Capital Climate</h1>
-  <p>Select a state to see the current weather from the state capital</p>
+  <div id="header">
+    <h1>Capital Climate</h1>
+    <p>Select a state to see the current and future weather from the state capital</p>
+  </div>
   <div id="visualization">
-    <div id="map"></div>
-    <div id="city-info">
-      <div>
+    
+    <div id="info-layer">
+      <div id="current">
         <h6>Current weather</h6>
         <h2 id="temp-f"></h2>
         <p id="name"></p>
       </div>
-      <div>
+      <div id="forecast">
         <h6>5 Day forecast</h6>
         <p id="temp-0"></p>
         <p id="temp-1"></p>
@@ -29,15 +31,17 @@
         <p id="temp-3"></p>
         <p id="temp-4"></p>
       </div>
-      <div>
-          <h6>Forecast Animation</h6>
-          <h2 id="time-temp"></h2>
-          <p id="time-code"></p>
-          <input id="time-warp" type="range" min="0" max="37" value="0" class="slider">
-          <button id="time-play">Play</button>
-        </div>
+      <div id="animation">
+        <h6>Forecast explorer</h6>
+        <h2 id="time-temp"></h2>
+        <p id="time-code"></p>
+        <input id="time-warp" type="range" min="0" max="37" value="0" class="slider">
+        <button id="time-play">Play</button>
+      </div>
     </div>
+    <div id="map"></div>
   </div>
+
   <script src="./mapzoom.js"></script>
   <script src="./main.js"></script>
 </body>
