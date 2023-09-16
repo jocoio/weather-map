@@ -27,8 +27,8 @@ function loadState(d) {
   var abbr = d.properties.STATE_ABBR; // State abbreviation
   var city = state_info[abbr]; // Capital city object
 
-  weather_url = "https://api.openweathermap.org/data/2.5/weather?q=" + city.capital + ",us&appid=e95cc5001f5007830d078685ef86fd62";
-  forecast_url = "https://api.openweathermap.org/data/2.5/forecast?q=" + city.capital + ",us&appid=e95cc5001f5007830d078685ef86fd62";
+  weather_url = "https://api.openweathermap.org/data/2.5/weather?q=" + city.capital + ",us&appid=20dd3084fbe66e7ae0dd3da85dd23f8f";
+  forecast_url = "https://api.openweathermap.org/data/2.5/forecast?q=" + city.capital + ",us&appid=20dd3084fbe66e7ae0dd3da85dd23f8f";
 
   // Current weather data
   d3.json(weather_url, function (data) {
@@ -199,7 +199,7 @@ function fahrenheit(kelvin) { return celcuis(kelvin) * 9 / 5 + 32; }
 // Kelvin temp to HSL string representation
 // TODO: Fix color range to be: Blue -> yellow/whitish -> Red (no green)
 function tempToHSL(temp) {
-  console.log(270 - ((fahrenheit(temp) / 90) * 270));
+  // console.log(270 - ((fahrenheit(temp) / 90) * 270));
   var hue = 270 - ((fahrenheit(temp) / 90) * 270);
   var hsl_string = 'hsl(' + [hue, '70%', '50%'] + ')';
   return hsl_string;
